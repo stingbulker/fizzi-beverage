@@ -26,7 +26,7 @@ export default function ViewCanvas({}: Props) {
       }}
     >
       <Float
-        speed={100}
+        speed={2}
         rotationIntensity={1}
         floatIntensity={1}
         floatingRange={[-.1, .1]}
