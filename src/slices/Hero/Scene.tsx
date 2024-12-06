@@ -48,6 +48,17 @@ export default function Scene({}: Props) {
     gsap.set(can3Ref.current.position, { y: 5, z: 0.5 });
     gsap.set(can4Ref.current.position, { x: 2, y: 4, z: 0.5 });
     gsap.set(can5Ref.current.position, { y: -5 });
+
+    const introTl = gsap.timeline({
+      defaults: {
+        duration: 3,
+        ease: "back.out(1.4)"
+      }
+    })
+    
+    introTl
+    .from
+
   });
 
   return (
