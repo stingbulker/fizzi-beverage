@@ -5,10 +5,11 @@ import { useRef } from "react";
 import { Group } from "three";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import FloatingCan from "@/components/FloatingCan";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type Props = {};
 
@@ -52,13 +53,51 @@ export default function Scene({}: Props) {
     const introTl = gsap.timeline({
       defaults: {
         duration: 3,
-        ease: "back.out(1.4)"
-      }
-    })
-    
-    introTl
-    .from
+        ease: "back.out(1.4)",
+      },
+    });
 
+    introTl
+      .from(can1GroupRef.current.position, { y: -5, x: 1 }, 0)
+      .from(can1GroupRef.current.position, { z: 3 }, 0)
+      .from(can2GroupRef.current.position, { y: 5, x: 1 }, 0)
+      .from(can2GroupRef.current.position, { z: 3 }, 0);
+
+    const scrollTl = gsap.timeline({
+      defaults: {
+        duration: 2,
+      },
+      scrollTrigger: {
+        trigger: ".hero",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.5,
+      },
+    });
+
+    scrollTl
+    // Rotate can group
+    .to(groupRef.current.rotation, { y: Math.PI * 2 })
+
+    // Can 1 - Black Cherry
+    .to(can1Ref.current.position, {x:-.2,y:-.7,z:-2},0)
+    .to(can1Ref.current.rotation, {z:.3},0)
+
+    // Can 2 - Lemon Lime
+    .to(can2Ref.current.position, {x:1,y:-.2,z:-1},0)
+    .to(can2Ref.current.rotation, {z:0},0)
+
+    // Can 3 - Grape
+    .to(can3Ref.current.position, {x:-.3,y:.5,z:-1},0)
+    .to(can3Ref.current.rotation, {z:-.1},0)
+
+    // Can 4 - Strawberry Lemonade
+    .to(can4Ref.current.position, {x:0,y:-.3,z:.5},0)
+    .to(can4Ref.current.rotation, {z:.3},0)
+
+    // Can 5 - Watermelon
+    .to(can5Ref.current.position, {x:.3,y:.5,z:-.5},0)
+    .to(can5Ref.current.rotation, {z:-.25},0)
   });
 
   return (
@@ -89,7 +128,7 @@ export default function Scene({}: Props) {
 
       <FloatingCan ref={can5Ref} flavor="watermelon" floatSpeed={FLOAT_SPEED} />
 
-      <OrbitControls/>
+      <OrbitControls />
       <Environment files="/hdr/lobby.hdr" environmentIntensity={1.5} />
     </group>
   );
