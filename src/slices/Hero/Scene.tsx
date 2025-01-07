@@ -8,12 +8,15 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import FloatingCan from "@/components/FloatingCan";
+import { useStore } from "@/hooks/useStore"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type Props = {};
 
-export default function Scene({}: Props) {
+export default function Scene({ }: Props) {
+  const isReady = useStore((state) => state.isReady)
+
   const can1Ref = useRef<Group>(null);
   const can2Ref = useRef<Group>(null);
   const can3Ref = useRef<Group>(null);
@@ -40,6 +43,8 @@ export default function Scene({}: Props) {
     )
       return;
 
+    isReady();
+
     gsap.set(can1Ref.current.position, { x: -1.5 });
     gsap.set(can1Ref.current.rotation, { z: -0.5 });
 
@@ -57,11 +62,13 @@ export default function Scene({}: Props) {
       },
     });
 
-    introTl
-      .from(can1GroupRef.current.position, { y: -5, x: 1 }, 0)
-      .from(can1GroupRef.current.position, { z: 3 }, 0)
-      .from(can2GroupRef.current.position, { y: 5, x: 1 }, 0)
-      .from(can2GroupRef.current.position, { z: 3 }, 0);
+    if (window.scrollY < 20) {
+      introTl
+        .from(can1GroupRef.current.position, { y: -5, x: 1 }, 0)
+        .from(can1GroupRef.current.position, { z: 3 }, 0)
+        .from(can2GroupRef.current.position, { y: 5, x: 1 }, 0)
+        .from(can2GroupRef.current.position, { z: 3 }, 0);
+    }
 
     const scrollTl = gsap.timeline({
       defaults: {
@@ -76,28 +83,29 @@ export default function Scene({}: Props) {
     });
 
     scrollTl
-    // Rotate can group
-    .to(groupRef.current.rotation, { y: Math.PI * 2 })
+      // Rotate can group
+      .to(groupRef.current.rotation, { y: Math.PI * 2 })
 
-    // Can 1 - Black Cherry
-    .to(can1Ref.current.position, {x:-.2,y:-.7,z:-2},0)
-    .to(can1Ref.current.rotation, {z:.3},0)
+      // Can 1 - Black Cherry
+      .to(can1Ref.current.position, { x: -.2, y: -.7, z: -2 }, 0)
+      .to(can1Ref.current.rotation, { z: .3 }, 0)
 
-    // Can 2 - Lemon Lime
-    .to(can2Ref.current.position, {x:1,y:-.2,z:-1},0)
-    .to(can2Ref.current.rotation, {z:0},0)
+      // Can 2 - Lemon Lime
+      .to(can2Ref.current.position, { x: 1, y: -.2, z: -1 }, 0)
+      .to(can2Ref.current.rotation, { z: 0 }, 0)
 
-    // Can 3 - Grape
-    .to(can3Ref.current.position, {x:-.3,y:.5,z:-1},0)
-    .to(can3Ref.current.rotation, {z:-.1},0)
+      // Can 3 - Grape
+      .to(can3Ref.current.position, { x: -.3, y: .5, z: -1 }, 0)
+      .to(can3Ref.current.rotation, { z: -.1 }, 0)
 
-    // Can 4 - Strawberry Lemonade
-    .to(can4Ref.current.position, {x:0,y:-.3,z:.5},0)
-    .to(can4Ref.current.rotation, {z:.3},0)
+      // Can 4 - Strawberry Lemonade
+      .to(can4Ref.current.position, { x: 0, y: -.3, z: .5 }, 0)
+      .to(can4Ref.current.rotation, { z: .3 }, 0)
 
-    // Can 5 - Watermelon
-    .to(can5Ref.current.position, {x:.3,y:.5,z:-.5},0)
-    .to(can5Ref.current.rotation, {z:-.25},0)
+      // Can 5 - Watermelon
+      .to(can5Ref.current.position, { x: .3, y: .5, z: -.5 }, 0)
+      .to(can5Ref.current.rotation, { z: -.25 }, 0)
+      .to(groupRef.current.position, { x: 1, duration: 3, ease: "sine.inOut" }, 1.3)
   });
 
   return (
