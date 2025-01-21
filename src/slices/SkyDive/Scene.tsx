@@ -12,7 +12,7 @@ export default function Scene({}: Props) {
   const canRef = useRef<THREE.Group>(null);
   const cloud1Ref = useRef<THREE.Group>(null);
   const cloud2Ref = useRef<THREE.Group>(null);
-  const cloud3Ref = useRef<THREE.Group>(null);
+  const cloudsRef = useRef<THREE.Group>(null);
   const wordsRef = useRef<THREE.Group>(null);
 
   return (
@@ -20,12 +20,13 @@ export default function Scene({}: Props) {
       <group rotation={[0, 0, 0.5]}>
         <FloatingCan ref={canRef}></FloatingCan>
       </group>
-      
-      <Clouds>
-        <Cloud/>
+
+      <Clouds ref={cloudsRef}>
+        <Cloud ref={cloud1Ref} bounds={[10, 10, 2]} />
+        <Cloud ref={cloud2Ref} bounds={[10, 10, 2]} />
       </Clouds>
 
-      {/* <OrbitControls /> */}
+      <OrbitControls />
 
       <ambientLight intensity={2} color="#9DDEFA" />
       <Environment files="/hdr/field.hdr" environmentIntensity={1.5} />
